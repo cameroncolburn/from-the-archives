@@ -4,7 +4,12 @@ import os
 from config import create_conn
 import shutil
 from PIL import Image
-import time
+
+# Constants
+MINIMUM_CONFIDENCE = 0.95
+INBOUND_PHOTOS = 'photos'
+# Face Detection Backend Options {Options: 'opencv', 'retinaface', 'mtcnn', 'ssd', 'dlib', 'mediapipe', 'yolov8' (default is opencv).}
+BACKEND = 'retinaface'
 
 # Variables
 parent_dir = os.path.abspath(os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))
@@ -19,7 +24,6 @@ def save_image_to_database(source_file_path, filename):
     destination_dir = os.path.join(parent_dir, 'images')
 
     # move inbound image to destination directory
-    print(f"Moving {filename} to {destination_dir}")
     shutil.move(source_file_path, destination_dir)
 
     # create a thumbnail for the image
@@ -32,7 +36,6 @@ def save_image_to_database(source_file_path, filename):
         values = (filename, os.path.join('images', filename), thumb_path)
         cursor.execute(query, values)
         conn.commit()
-        print(f"Image {filename} added successfully")
         cursor.close()
         conn.close()
     return os.path.join('images', filename)
@@ -64,7 +67,6 @@ def save_face_region(x, y, w, h, face_filename, original_image_path, confidence,
         values = (image_id[0], face_filename, face_region_path, x, y, w, h, confidence, is_face)
         cursor.execute(query_insert, values)
         conn.commit()
-        print(f"Image {face_filename} added successfully")
         cursor.close()
         conn.close()
 
@@ -91,9 +93,8 @@ def face_confidence(confidence):
     Compares the confidence parameter with the specified minimum confidence
     level. Returns boolean True/False
     """
-    # set confidence level
-    minimum_confidence = 0.95
-    result = True if confidence > minimum_confidence else False
+    # calculate confidence level
+    result = True if confidence > MINIMUM_CONFIDENCE else False
     return result
 
 def face_detection(original_image_path, filename_with_ext):
@@ -103,11 +104,9 @@ def face_detection(original_image_path, filename_with_ext):
     """
     filename_no_ext = os.path.splitext(filename_with_ext)[0]
 
-    # Face Detection Backend Options {Options: 'opencv', 'retinaface', 'mtcnn', 'ssd', 'dlib', 'mediapipe', 'yolov8' (default is opencv).}
-    backend = 'retinaface'
     results = DeepFace.extract_faces(img_path = original_image_path,
                                      target_size = (224, 224),
-                                     detector_backend = backend,
+                                     detector_backend = BACKEND,
                                      align=True)
     count = 0
 
@@ -126,7 +125,7 @@ def main():
     then runs the face detection alogorithm for each image.
     """
     # Set inbound image directory
-    directory = os.path.join(parent_dir, 'photos')
+    directory = os.path.join(parent_dir, INBOUND_PHOTOS)
 
     if not os.path.isdir(directory):
         print(f"The directory named {directory} does not exist.")
@@ -140,7 +139,7 @@ def main():
     
     for image in files:
         file_path = os.path.join(directory, image)
-        if os.path.isfile(file_path):
+        if os.path.isfile(file_path) and not image.startswith('.'):
             filename_with_ext = file_path.split(f"{directory}\\")[1]
             new_file_path = save_image_to_database(file_path, filename_with_ext)
             face_detection(os.path.join(parent_dir, new_file_path), filename_with_ext)
@@ -149,6 +148,4 @@ def main():
 
 
 if __name__ == "__main__":
-   start_time = time.time()
    main()
-   print("--- %s senconds ---" % (time.time() - start_time))

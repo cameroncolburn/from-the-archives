@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2024 at 02:20 PM
+-- Generation Time: Apr 04, 2024 at 09:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -53,6 +53,21 @@ CREATE TABLE `image` (
   `thumbnail_path` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `person`
+--
+
+CREATE TABLE `person` (
+  `person_id` int(10) NOT NULL,
+  `face_id` int(10) NOT NULL,
+  `firstname` varchar(200) DEFAULT NULL,
+  `lastname` varchar(200) DEFAULT NULL,
+  `serial_number` varchar(200) DEFAULT NULL,
+  `file_path` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -71,6 +86,12 @@ ALTER TABLE `image`
   ADD PRIMARY KEY (`image_id`);
 
 --
+-- Indexes for table `person`
+--
+ALTER TABLE `person`
+  ADD PRIMARY KEY (`person_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -78,13 +99,19 @@ ALTER TABLE `image`
 -- AUTO_INCREMENT for table `face`
 --
 ALTER TABLE `face`
-  MODIFY `face_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4673;
+  MODIFY `face_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5139;
 
 --
 -- AUTO_INCREMENT for table `image`
 --
 ALTER TABLE `image`
-  MODIFY `image_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
+  MODIFY `image_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
+
+--
+-- AUTO_INCREMENT for table `person`
+--
+ALTER TABLE `person`
+  MODIFY `person_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables

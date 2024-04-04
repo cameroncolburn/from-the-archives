@@ -18,7 +18,7 @@
 
         <div class="text-center bg-dark-subtle rounded border border-dark-subtle p-5 mb-5">
 
-            <h2><?php echo $TPL["results"][0]["filename"] ?></h2>
+            <!-- <h2><php echo $TPL["results"][0]["filename"] ?></h2> -->
             <div id="img-container">
                 <canvas id="myCanvas" style="width: 100%; height: 100%;"></canvas>
             </div>
@@ -27,6 +27,47 @@
 
     <!-- modal -->
     <div class="modal fade" id="faceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalTitle"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3 text-center">
+
+                </div>
+                <div class="px-5 py-3" id="modal-form">
+                    <!-- <form action="app.ctrl.php?act=create" method="POST">
+                        <php print_r($TPL["person"]) ?>
+                        <input type="hidden" name="face_id" id="face_id" value="<?php echo $TPL["faces"][0]["face_id"] ?>">
+                        <div class="mb-2">
+                            <label for="firstname" class="col-form-label">First Name:</label>
+                            <input type="text" class="form-control" name="firstname" id="firstname">
+                        </div>
+                        <div class="mb-2">
+                            <label for="lastname" class="col-form-label">Last Name:</label>
+                            <input type="text" class="form-control" name="lastname" id="lastname">
+                        </div>
+                        <div class="mb-4">
+                            <label for="serial_number" class="col-form-label">Serial Number:</label>
+                            <input type="text" class="form-control" name="serial_number" id="serial_number">
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" value="Submit" class="btn btn-primary">
+                    </form> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- <div class="modal fade" id="faceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -42,7 +83,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         var img = new Image();
@@ -68,7 +109,7 @@
 
                 // Create anchor tag
                 var anchor = document.createElement('a');
-                anchor.href = '#';
+                anchor.href = 'app.ctrl.php?act=view&face_id=' + face["face_id"];
                 anchor.style.position = 'absolute';
                 anchor.style.left = (scaleBoxX + container.offsetLeft) + 'px';
                 anchor.style.top = (scaleBoxY + container.offsetTop) + 'px';
@@ -81,9 +122,30 @@
                     event.preventDefault();
                     var faceModal = new bootstrap.Modal(document.getElementById('faceModal'));
                     faceModal.show();
+                    var modalTitle = document.querySelector('#modalTitle');
+                    modalTitle.innerHTML = face["filename"];
                     var modalBody = document.querySelector('#faceModal .modal-body');
                     modalBody.innerHTML = '<img src="../' + face["file_path"] + '">';
-                    modalBody.innerHTML += '<p>Name: ' + face["name"] + '</p>';
+                    // modalBody.innerHTML += '<p>Name: ' + face["name"] + '</p>';
+                    var modalForm = document.querySelector('#modal-form');
+                    modalForm.innerHTML =
+                        "<form action='app.ctrl.php?act=create' method='POST'>" +
+                        "<input type='hidden' name='face_id' id='face_id' value='" + face["face_id"] + "'>" +
+                        "<div class='mb-2'>" +
+                        "<label for='firstname' class='col-form-label'>First Name:</label>" +
+                        "<input type='text' class='form-control' name='firstname' id='firstname'>" +
+                        "</div>" +
+                        "<div class='mb-2'>" +
+                        "<label for='lastname' class='col-form-label'>Last Name:</label>" +
+                        "<input type='text' class='form-control' name='lastname' id='lastname'>" +
+                        "</div>" +
+                        "<div class='mb-4'>" +
+                        "<label for='serial_number' class='col-form-label'>Serial Number:</label>" +
+                        "<input type='text' class='form-control' name='serial_number' id='serial_number'>" +
+                        "</div>" +
+                        "<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>" +
+                        "<input type='submit' value='Submit' class='btn btn-primary'>" +
+                        "</form>";
                 });
 
                 container.appendChild(anchor);
