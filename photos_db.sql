@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2024 at 09:55 PM
+-- Generation Time: Apr 12, 2024 at 06:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -37,7 +37,7 @@ CREATE TABLE `face` (
   `width` int(10) NOT NULL,
   `height` int(10) NOT NULL,
   `confidence` double NOT NULL,
-  `is_face` tinyint(1) NOT NULL DEFAULT 1
+  `is_face` smallint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -99,19 +99,19 @@ ALTER TABLE `person`
 -- AUTO_INCREMENT for table `face`
 --
 ALTER TABLE `face`
-  MODIFY `face_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5139;
+  MODIFY `face_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `image`
 --
 ALTER TABLE `image`
-  MODIFY `image_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
+  MODIFY `image_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `person`
 --
 ALTER TABLE `person`
-  MODIFY `person_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `person_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

@@ -6,7 +6,7 @@ import shutil
 from PIL import Image
 
 # Constants
-MINIMUM_CONFIDENCE = 0.95
+MINIMUM_CONFIDENCE = 0.90
 INBOUND_PHOTOS = 'photos'
 # Face Detection Backend Options {Options: 'opencv', 'retinaface', 'mtcnn', 'ssd', 'dlib', 'mediapipe', 'yolov8' (default is opencv).}
 BACKEND = 'retinaface'
@@ -94,7 +94,10 @@ def face_confidence(confidence):
     level. Returns boolean True/False
     """
     # calculate confidence level
-    result = True if confidence > MINIMUM_CONFIDENCE else False
+    if (confidence > MINIMUM_CONFIDENCE):
+        result = 1
+    else:
+        result = 0
     return result
 
 def face_detection(original_image_path, filename_with_ext):
